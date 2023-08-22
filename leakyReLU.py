@@ -2,7 +2,7 @@ import numpy as np
 
 
 def leaky_relu(x, alpha = 0.01):
-    return max(alpha * x, x)
+    return np.maximum(alpha * x, x)
 
 
 def leaky_relu_derivative(x, alpha = 0.01):
