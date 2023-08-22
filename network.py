@@ -47,9 +47,9 @@ class Network:
                 loss = self.loss_derivative(training_output[j], output)
                 # got to reverse the layers to propagate backwards (duh)
                 for layer in reversed(self.layers):
-                    error = layer.backward_propagation(loss, learning_rate)
+                    loss = layer.backward_propagation(loss, learning_rate)
 
-                # calculate average error
-                display_loss /= sample_count
-                print('epoch {}/{}  error={}'.format(i+1, epoch_count, display_loss))
+            # calculate average error
+            display_loss /= sample_count
+            print('epoch {}/{}  error={}'.format(i+1, epoch_count, display_loss))
 
