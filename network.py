@@ -29,7 +29,7 @@ class Network:
         return result
 
     # training (note: training_output repr. the expected value, the real result)
-    def traio(self, training_input, training_output, epoch_count, learning_rate):
+    def train(self, training_input, training_output, epoch_count, learning_rate):
         sample_count = len(training_input)
 
         for i in range(epoch_count):
