@@ -18,4 +18,3 @@ class ActivationLayer(Layer):
     def backward_propagation(self, output_error, learning_rate):
         # no learnable parameters
         return self.activation_derivative(self.input) * output_error
-

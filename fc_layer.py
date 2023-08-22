@@ -7,8 +7,8 @@ class FCLayer(Layer):
     # number of input resp. output neurons
     def __init__(self, input_size, output_size):
         super().__init__()
-        self.weights = np.random.rand(input_size, output_size)  - 0.5
-        self.biases = np.random.rand(1, output_size) - 0.5
+        self.weights = np.random.rand(input_size, output_size)
+        self.biases = np.random.rand(1, output_size)
 
     # Y = WX + B
     def forward_propagation(self, input_data):
@@ -26,5 +26,3 @@ class FCLayer(Layer):
         self.weights -= learning_rate * weights_error
         self.biases -= learning_rate * output_error
         return input_error
-
-

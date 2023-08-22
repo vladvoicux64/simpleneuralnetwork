@@ -6,4 +6,4 @@ def tanh(x):
 
 
 def tanh_derivative(x):
-    return 1-np.tanh(x)**2
+    return 1 - np.tanh(x) ** 2

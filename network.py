@@ -51,5 +51,4 @@ class Network:
 
             # calculate average error
             display_loss /= sample_count
-            print('epoch {}/{}  error={}'.format(i+1, epoch_count, display_loss))
-
+            print('epoch {}/{}  error={}'.format(i + 1, epoch_count, display_loss))
