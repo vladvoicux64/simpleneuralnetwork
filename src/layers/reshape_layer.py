@@ -1,4 +1,5 @@
 import numpy as np
+
 from layer import Layer
 
 
@@ -13,4 +14,3 @@ class ReshapeLayer(Layer):
 
     def backward_propagation(self, output_gradient, learning_rate):
         return np.reshape(output_gradient, self.input_shape)
-

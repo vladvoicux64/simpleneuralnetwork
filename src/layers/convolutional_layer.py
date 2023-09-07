@@ -1,6 +1,7 @@
 import numpy as np
-from layer import Layer
 from scipy import signal
+
+from layer import Layer
 
 
 class ConvolutionalLayer(Layer):
@@ -35,4 +36,3 @@ class ConvolutionalLayer(Layer):
             self.kernels -= learning_rate * kernels_gradient
             self.biases -= learning_rate * output_gradient
             return input_gradient
-

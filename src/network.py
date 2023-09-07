@@ -11,12 +11,12 @@ class Network:
         self.loss = loss
         self.loss_derivative = loss_derivative
 
-    def network_forward_propagation(self, input_data):
-        samples_count = len(input_data)
+    def network_forward_propagation(self, input):
+        samples_count = len(input)
         result = []
 
         for i in range(samples_count):
-            output = input_data[i]
+            output = input[i]
             for layer in self.layers:
                 output = layer.forward_propagation(output)
             result.append(output)

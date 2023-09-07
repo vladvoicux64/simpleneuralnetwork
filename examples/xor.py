@@ -5,10 +5,10 @@ import numpy as np
 sys.path.append('../src/')
 
 from src.network import Network
-from src.fc_layer import FCLayer
-from src.activation_layer import ActivationLayer
+from src.layers.fc_layer import FCLayer
+from src.layers.activation_layer import ActivationLayer
 from src.leakyReLU import leaky_relu, leaky_relu_derivative
-from src.loss import mse, mse_derivative
+from src.losses.mse import mse, mse_derivative
 
 training_input = np.array([[[0, 0]], [[0, 1]], [[1, 0]], [[1, 1]]])
 training_output = np.array([[[0]], [[1]], [[1]], [[0]]])

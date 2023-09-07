@@ -5,10 +5,10 @@ import numpy as np
 sys.path.append('../src/')
 
 from src.network import Network
-from src.fc_layer import FCLayer
-from src.activation_layer import ActivationLayer
+from src.layers.fc_layer import FCLayer
+from src.layers.activation_layer import ActivationLayer
 from src.leakyReLU import leaky_relu, leaky_relu_derivative
-from src.loss import mse, mse_derivative
+from src.losses.mse import mse, mse_derivative
 
 from keras.datasets import mnist
 from keras.utils import to_categorical
@@ -37,7 +37,7 @@ net.use_loss(mse, mse_derivative)
 for i in range(60):
     print(f'batch {i}:')
     net.train(training_input[i * 1000: (i + 1) * 1000], training_output[i * 1000: (i + 1) * 1000], epoch_count=100,
-              learning_rate=0.15)
+              learning_rate=0.1)
 
 out = np.round(net.network_forward_propagation(test_input)).reshape(10000, 10)
 print(out)
