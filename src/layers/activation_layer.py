@@ -1,4 +1,4 @@
-from layer import Layer
+from src.layers.layer import Layer
 
 
 class ActivationLayer(Layer):

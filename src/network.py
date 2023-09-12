@@ -4,9 +4,6 @@ class Network:
         self.loss = None
         self.loss_derivative = None
 
-    def add_layer(self, layer):
-        self.layers.append(layer)
-
     def use_loss(self, loss, loss_derivative):
         self.loss = loss
         self.loss_derivative = loss_derivative

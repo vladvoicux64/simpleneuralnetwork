@@ -1,7 +1,7 @@
 import numpy as np
-from scipy import signal
 
-from layer import Layer
+from scipy import signal
+from src.layers.layer import Layer
 
 
 class ConvolutionalLayer(Layer):
