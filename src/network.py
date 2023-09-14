@@ -1,3 +1,6 @@
+import numpy as np
+
+
 class Network:
     def __init__(self):
         self.layers = []
@@ -20,7 +23,7 @@ class Network:
 
         return result
 
-    def train(self, training_input, training_output, epoch_count, learning_rate):
+    def train_stochastic(self, training_input, training_output, epoch_count, learning_rate):
         sample_count = len(training_input)
 
         for i in range(epoch_count):
@@ -37,4 +40,20 @@ class Network:
                     loss = layer.backward_propagation(loss, learning_rate)
 
             display_loss /= sample_count
+            print('epoch {}/{}  error={}'.format(i + 1, epoch_count, display_loss))
+
+    def train_minibatch(self, training_input, training_output, epoch_count, batch_size, learning_rate):
+        for i in range(epoch_count):
+            display_loss = 0
+            input_batches = [training_input[i:i + batch_size] for i in range(0, len(training_input), batch_size)]
+            output_batches = [training_output[i:i + batch_size] for i in range(0, len(training_output), batch_size)]
+            for batch_input, batch_output in zip(input_batches, output_batches):
+                loss = 0
+                output = self.network_forward_propagation(batch_input)
+                loss = np.mean(self.loss_derivative(batch_output, output))
+                display_loss += np.mean(self.loss(batch_output, output))
+                for layer in reversed(self.layers):
+                    loss = layer.backward_propagation(loss, learning_rate)
+
+            display_loss /= len(training_input) / batch_size
             print('epoch {}/{}  error={}'.format(i + 1, epoch_count, display_loss))
