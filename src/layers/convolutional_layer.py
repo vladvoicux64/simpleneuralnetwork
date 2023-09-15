@@ -1,11 +1,11 @@
 import numpy as np
-
 from scipy import signal
+
 from src.layers.layer import Layer
 
 
 class ConvolutionalLayer(Layer):
-    def __init__(self, input_shape, kernel_size, depth):
+    def __init__(self, input_shape, kernel_size, depth, init_negative_weights=False):
         super().__init__()
         input_depth, input_height, input_width = input_shape
         self.depth = depth
@@ -13,8 +13,8 @@ class ConvolutionalLayer(Layer):
         self.input_depth = input_depth
         self.output_shape = (depth, input_height - kernel_size + 1, input_width - kernel_size + 1)
         self.kernels_shape = (depth, input_depth, kernel_size, kernel_size)
-        self.kernels = np.random.randn(*self.kernels_shape)
-        self.biases = np.random.rand(*self.output_shape)
+        self.kernels = np.random.rand(*self.kernels_shape) - init_negative_weights * 0.5
+        self.biases = np.random.rand(*self.output_shape) - init_negative_weights * 0.5
 
     def forward_propagation(self, input):
         self.input = input
@@ -33,6 +33,6 @@ class ConvolutionalLayer(Layer):
                 kernels_gradient[i, j] = signal.correlate2d(self.input[j], output_gradient[i], 'valid')
                 input_gradient[j] += signal.convolve2d(output_gradient[i], self.kernels[i, j], 'full')
 
-            self.kernels -= learning_rate * kernels_gradient
-            self.biases -= learning_rate * output_gradient
-            return input_gradient
+        self.kernels -= learning_rate * kernels_gradient
+        self.biases -= learning_rate * output_gradient
+        return input_gradient
