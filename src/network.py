@@ -43,10 +43,10 @@ class Network:
             print('epoch {}/{}  error={}'.format(i + 1, epoch_count, display_loss))
 
     def train_minibatch(self, training_input, training_output, epoch_count, batch_size, learning_rate):
+        input_batches = [training_input[i:i + batch_size] for i in range(0, len(training_input), batch_size)]
+        output_batches = [training_output[i:i + batch_size] for i in range(0, len(training_output), batch_size)]
         for i in range(epoch_count):
             display_loss = 0
-            input_batches = [training_input[i:i + batch_size] for i in range(0, len(training_input), batch_size)]
-            output_batches = [training_output[i:i + batch_size] for i in range(0, len(training_output), batch_size)]
             for batch_input, batch_output in zip(input_batches, output_batches):
                 loss = 0
                 output = self.network_forward_propagation(batch_input)
