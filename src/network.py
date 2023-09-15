@@ -48,7 +48,6 @@ class Network:
         for i in range(epoch_count):
             display_loss = 0
             for batch_input, batch_output in zip(input_batches, output_batches):
-                loss = 0
                 output = self.network_forward_propagation(batch_input)
                 loss = np.mean(self.loss_derivative(batch_output, output))
                 display_loss += np.mean(self.loss(batch_output, output))
