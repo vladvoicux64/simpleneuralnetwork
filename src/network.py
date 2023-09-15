@@ -24,6 +24,8 @@ class Network:
         return result
 
     def train_stochastic(self, training_input, training_output, epoch_count, learning_rate):
+        start_err = 0
+        end_err = 0
         sample_count = len(training_input)
 
         for i in range(epoch_count):
@@ -40,9 +42,16 @@ class Network:
                     loss = layer.backward_propagation(loss, learning_rate)
 
             display_loss /= sample_count
+            if i == 0: start_err = display_loss
+            if i == epoch_count - 1: end_err = display_loss
             print('epoch {}/{}  error={}'.format(i + 1, epoch_count, display_loss))
 
+        improvement = (start_err - end_err) / abs(start_err) * 100
+        print('rate of improvement={}%'.format(improvement))
+
     def train_minibatch(self, training_input, training_output, epoch_count, batch_size, learning_rate):
+        start_err = 0
+        end_err = 0
         input_batches = [training_input[i:i + batch_size] for i in range(0, len(training_input), batch_size)]
         output_batches = [training_output[i:i + batch_size] for i in range(0, len(training_output), batch_size)]
         batch_count = len(training_input) // batch_size
@@ -57,4 +66,9 @@ class Network:
                     loss = layer.backward_propagation(loss, learning_rate)
 
             display_loss /= batch_count
+            if i == 0: start_err = display_loss
+            if i == epoch_count - 1: end_err = display_loss
             print('epoch {}/{}  error={}'.format(i + 1, epoch_count, display_loss))
+
+        improvement = (start_err - end_err) / abs(start_err) * 100
+        print('rate of improvement={}%'.format(improvement))
