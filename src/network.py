@@ -45,14 +45,16 @@ class Network:
     def train_minibatch(self, training_input, training_output, epoch_count, batch_size, learning_rate):
         input_batches = [training_input[i:i + batch_size] for i in range(0, len(training_input), batch_size)]
         output_batches = [training_output[i:i + batch_size] for i in range(0, len(training_output), batch_size)]
+        batch_count = len(training_input) // batch_size
+
         for i in range(epoch_count):
             display_loss = 0
-            for batch_input, batch_output in zip(input_batches, output_batches):
-                output = self.network_forward_propagation(batch_input)
-                loss = np.mean(self.loss_derivative(batch_output, output))
-                display_loss += np.mean(self.loss(batch_output, output))
+            for mini_input, mini_output in zip(input_batches, output_batches):
+                output = self.network_forward_propagation(mini_input)
+                display_loss = np.sum(self.loss(mini_output, output)) / batch_size / 2
+                loss = sum(self.loss_derivative(mini_output, output)) / batch_size
                 for layer in reversed(self.layers):
                     loss = layer.backward_propagation(loss, learning_rate)
 
-            display_loss /= len(training_input) / batch_size
+            display_loss /= batch_count
             print('epoch {}/{}  error={}'.format(i + 1, epoch_count, display_loss))
