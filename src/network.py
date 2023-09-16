@@ -60,7 +60,7 @@ class Network:
             display_loss = 0
             for mini_input, mini_output in zip(input_batches, output_batches):
                 output = self.network_forward_propagation(mini_input)
-                display_loss = np.sum(self.loss(mini_output, output)) / batch_size / 2
+                display_loss += np.sum(self.loss(mini_output, output)) / batch_size / 2
                 loss = sum(self.loss_derivative(mini_output, output)) / batch_size
                 for layer in reversed(self.layers):
                     loss = layer.backward_propagation(loss, learning_rate)
