@@ -1,3 +1,6 @@
+import numpy as np
+
+from src.activation_functions.softmax import softmax
 from src.layers.layer import Layer
 
 
@@ -13,4 +16,7 @@ class ActivationLayer(Layer):
         return self.output
 
     def backward_propagation(self, output_gradient, learning_rate):
-        return self.activation_derivative(self.input) * output_gradient
+        if self.activation == softmax:
+            return np.dot(output_gradient, self.activation_derivative(self.input))
+        else:
+            return self.activation_derivative(self.input) * output_gradient
