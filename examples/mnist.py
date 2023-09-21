@@ -2,7 +2,9 @@ import numpy as np
 from keras.datasets import mnist
 from keras.utils import to_categorical
 
-from src.activation_functions.sigmoid import sigmoid, sigmoid_derivative
+from src.accuracy_statistic import accuracy_statistic
+from src.activation_functions.leaky_relu import leaky_relu, leaky_relu_derivative
+from src.activation_functions.softmax import softmax, softmax_derivative
 from src.layers.activation_layer import ActivationLayer
 from src.layers.convolutional_layer import ConvolutionalLayer
 from src.layers.fc_layer import FCLayer
@@ -32,22 +34,18 @@ test_input, test_output = preprocess_data(test_input, test_output, 50)
 net = Network()
 net.layers = [
     ConvolutionalLayer((1, 28, 28), 5, 32, True),
-    ActivationLayer(sigmoid, sigmoid_derivative),
+    ActivationLayer(leaky_relu, leaky_relu_derivative),
     ReshapeLayer((32, 24, 24), (1, 32 * 24 * 24)),
     FCLayer(32 * 24 * 24, 100, True),
-    ActivationLayer(sigmoid, sigmoid_derivative),
+    ActivationLayer(leaky_relu, leaky_relu_derivative),
     FCLayer(100, 2, True),
-    ActivationLayer(sigmoid, sigmoid_derivative),
+    ActivationLayer(softmax, softmax_derivative),
 ]
 
 net.use_loss(mse, mse_derivative)
 
-net.train_minibatch(training_input, training_output, epoch_count=20, batch_size=5, learning_rate=0.2)
+net.train_minibatch(training_input, training_output, epoch_count=20, batch_size=5, learning_rate=0.01)
 
 out = np.round(net.network_forward_propagation(test_input))
 
-correct_ans = 0
-for prediction, answer in zip(out, test_output):
-    if np.array_equal(prediction, answer): correct_ans += 1
-
-print('accuracy:{}% '.format(correct_ans / len(test_input) * 100))
+accuracy_statistic(test_input, test_output, training_input, training_output, net)
