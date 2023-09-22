@@ -6,4 +6,4 @@ def mse(y_true, y_predicted):
 
 
 def mse_derivative(y_true, y_predicted):
-    return 2 * (y_predicted - y_true) / y_true.size
+    return 2 * (y_predicted - y_true) / y_true.shape[-1]
