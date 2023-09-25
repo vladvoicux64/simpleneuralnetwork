@@ -1,4 +1,6 @@
 import numpy as np
+from src.losses.xce import xce_derivative_softmax
+from src.activation_functions.softmax import softmax
 
 
 class Network:
@@ -10,6 +12,8 @@ class Network:
     def use_loss(self, loss, loss_derivative):
         self.loss = loss
         self.loss_derivative = loss_derivative
+        if loss_derivative == xce_derivative_softmax and self.layers[-1].activation != softmax:
+            raise NotImplemented
 
     def network_forward_propagation(self, input):
         samples_count = len(input)
@@ -66,8 +70,10 @@ class Network:
                     loss = layer.backward_propagation(loss, learning_rate)
 
             display_loss /= batch_count
-            if i == 0: start_err = display_loss
-            if i == epoch_count - 1: end_err = display_loss
+            if i == 0:
+                start_err = display_loss
+            if i == epoch_count - 1:
+                end_err = display_loss
             print('epoch {}/{}  error={}'.format(i + 1, epoch_count, display_loss))
 
         improvement = (start_err - end_err) / abs(start_err) * 100

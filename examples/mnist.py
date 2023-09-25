@@ -9,7 +9,7 @@ from src.layers.activation_layer import ActivationLayer
 from src.layers.convolutional_layer import ConvolutionalLayer
 from src.layers.fc_layer import FCLayer
 from src.layers.reshape_layer import ReshapeLayer
-from src.losses.mse import mse, mse_derivative
+from src.losses.xce import xce, xce_derivative_softmax
 from src.network import Network
 
 
@@ -25,6 +25,7 @@ def preprocess_data(input, output, count):
     output = output.reshape(len(output), 1, 2)
     return input, output
 
+
 (training_input, training_output), (test_input, test_output) = mnist.load_data()
 
 training_input, training_output = preprocess_data(training_input, training_output, 500)
@@ -39,12 +40,12 @@ net.layers = [
     FCLayer(32 * 24 * 24, 100, True),
     ActivationLayer(leaky_relu, leaky_relu_derivative),
     FCLayer(100, 2, True),
-    ActivationLayer(softmax, softmax_derivative),
+    ActivationLayer(softmax, softmax_derivative, using_softmax_xce=True),
 ]
 
-net.use_loss(mse, mse_derivative)
+net.use_loss(xce, xce_derivative_softmax)
 
-net.train_minibatch(training_input, training_output, epoch_count=20, batch_size=5, learning_rate=0.01)
+net.train_minibatch(training_input, training_output, epoch_count=20, batch_size=1, learning_rate=0.00004)
 
 out = np.round(net.network_forward_propagation(test_input))
 
