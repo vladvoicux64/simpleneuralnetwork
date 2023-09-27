@@ -13,6 +13,7 @@ from src.layers.reshape_layer import ReshapeLayer
 from src.losses.xentropy import xentropy, xentropy_derivative
 from src.network import Network
 
+np.random.seed(42)
 
 def preprocess_data(input, output, count):
     one_indexes = np.where(output == 1)[0][:count]
@@ -52,7 +53,7 @@ net.layers = [
 
 net.use_loss(xentropy, xentropy_derivative)
 
-net.train_minibatch(training_input, training_output, epoch_count=20, batch_size=1, learning_rate=0.00004)
+net.train_minibatch(training_input, training_output, epoch_count=20, batch_size=10, learning_rate=0.04)
 
 out = np.round(net.network_forward_propagation(test_input))
 
