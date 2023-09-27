@@ -1,4 +1,4 @@
-import autograd.numpy as np
+import numpy as np
 
 
 def xentropy(y_true, y_predicted):
