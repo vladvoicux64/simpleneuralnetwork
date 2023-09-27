@@ -1,6 +1,4 @@
 import numpy as np
-from src.losses.xce import xce_derivative_softmax
-from src.activation_functions.softmax import softmax
 
 
 class Network:
@@ -12,8 +10,6 @@ class Network:
     def use_loss(self, loss, loss_derivative):
         self.loss = loss
         self.loss_derivative = loss_derivative
-        if loss_derivative == xce_derivative_softmax and self.layers[-1].activation != softmax:
-            raise NotImplemented
 
     def network_forward_propagation(self, input):
         samples_count = len(input)
