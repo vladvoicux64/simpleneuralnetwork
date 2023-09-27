@@ -34,5 +34,5 @@ class MaxpoolingLayer(Layer):
                     max_area = self.input[i, j * pool_height: (j + 1) * pool_height,
                                k * pool_width: (k + 1) * pool_width]
                     maxj, maxk = np.unravel_index(np.argmax(max_area, axis=None), max_area.shape)
-                    input_gradient[i, maxj, maxk] = output_gradient[i, j, k]
+                    input_gradient[i, j * pool_height + maxj, k * pool_width + maxk] = output_gradient[i, j, k]
         return input_gradient
