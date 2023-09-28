@@ -30,7 +30,7 @@ def preprocess_data(input, output, count):
 
 (training_input, training_output), (test_input, test_output) = mnist.load_data()
 
-training_input, training_output = preprocess_data(training_input, training_output, 500)
+training_input, training_output = preprocess_data(training_input, training_output, 100)
 test_input, test_output = preprocess_data(test_input, test_output, 50)
 
 
@@ -53,8 +53,6 @@ net.layers = [
 
 net.use_loss(xentropy, xentropy_derivative)
 
-net.train_minibatch(training_input, training_output, epoch_count=20, batch_size=10, learning_rate=0.04)
-
-out = np.round(net.network_forward_propagation(test_input))
+net.train_minibatch(training_input, training_output, epoch_count=20, batch_size=5, learning_rate=0.000002)
 
 accuracy_statistic(test_input, test_output, training_input, training_output, net)
