@@ -1,4 +1,5 @@
-import numpy as np
+from src.layers.convolutional_layer import ConvolutionalLayer
+from src.layers.fc_layer import FCLayer
 
 
 class Network:
@@ -59,13 +60,31 @@ class Network:
         for i in range(epoch_count):
             display_loss = 0
             for mini_input, mini_output in zip(input_batches, output_batches):
-                output = self.network_forward_propagation(mini_input)
-                display_loss += np.sum(self.loss(mini_output, output)) / batch_size
-                loss = np.sum(self.loss_derivative(mini_output, output), axis=0) / batch_size
-                for layer in reversed(self.layers):
-                    loss = layer.backward_propagation(loss, learning_rate)
+                for layer in self.layers:
+                    if type(layer) is ConvolutionalLayer or type(layer) is FCLayer:
+                        layer.reset_caches()
 
-            display_loss /= batch_count
+                for sample, truth in zip(mini_input, mini_output):
+                    output = sample
+                    for layer in self.layers:
+                        output = layer.forward_propagation(output)
+
+                    display_loss += self.loss(truth, output)
+                    loss = self.loss_derivative(truth, output)
+
+                    for layer in reversed(self.layers):
+                        if type(layer) is ConvolutionalLayer or type(layer) is FCLayer:
+                            loss = layer.compute_gradients(loss, learning_rate)
+                        else:
+                            loss = layer.backward_propagation(loss, learning_rate)
+
+                for layer in self.layers:
+                    if type(layer) is ConvolutionalLayer or type(layer) is FCLayer:
+                        layer.caches[0], layer.caches[1] = layer.caches[0] / mini_input.shape[0], layer.caches[1] / \
+                                                           mini_input.shape[0]
+                        layer.update_gradients(layer.caches)
+
+            display_loss /= batch_count * mini_input.shape[0]
             if i == 0:
                 start_err = display_loss
             if i == epoch_count - 1:
