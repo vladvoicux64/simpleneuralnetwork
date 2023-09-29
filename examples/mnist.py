@@ -53,6 +53,6 @@ net.layers = [
 
 net.use_loss(xentropy, xentropy_derivative)
 
-net.train_minibatch(training_input, training_output, epoch_count=20, batch_size=5, learning_rate=0.000002)
+net.train_minibatch(training_input, training_output, epoch_count=20, batch_size=5, learning_rate=0.000015)
 
 accuracy_statistic(test_input, test_output, training_input, training_output, net)

@@ -13,7 +13,7 @@ def accuracy_statistic(test_input, test_output, training_input, training_output,
     test_accuracy = accuracy_measure(test_input, test_output, net)
     validation_accuracy = accuracy_measure(training_input, training_output, net)
 
-    if validation_accuracy < 90:
+    if validation_accuracy < 90 and test_accuracy < 95:
         verdict = 'underfitting'
     elif validation_accuracy > 95 and test_accuracy < 90:
         verdict = 'overfitting'
